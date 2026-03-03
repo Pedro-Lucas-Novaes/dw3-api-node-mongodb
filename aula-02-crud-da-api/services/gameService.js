@@ -1,0 +1,39 @@
+// Importando o Model
+import Game from "../models/Games.js"
+
+class gameService {
+    // Meteodo (serviço) para buscar todos os registros no banco
+    // funções asincronas são não bloqueantes
+    async getAll(){
+        // Try trata o sucesso
+        try{
+
+            // .find -> é um metodo do mongoose para buscar registros no banco
+            const games = await Game.find()
+            return games
+
+        // catch trata a falha
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // Metodo para cadastrar um Game
+    async Create(title, platform, year, price){
+        try{
+            const newGame = new Game({
+                // Desestruturação (title : title)
+                title,
+                platform,
+                year,
+                price
+            })
+            // Gravando no banco
+            await newGame.save() // .save() metodo do moongose para cadastrar no BD
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}
+// Exportando a classe
+export default new gameService()
