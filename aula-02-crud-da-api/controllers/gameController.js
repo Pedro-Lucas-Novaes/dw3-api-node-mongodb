@@ -63,8 +63,8 @@ const updateGame = async (req, res) => {
     const id = req.params.id;
     if (ObjectId.isValid(id)) {
       const { title, platform, year, price } = req.body;
-      await gameService.Update(id, title, platform, year, price);
-      res.status(200).json({ message: "Jogo atualizado com sucesso!" });
+      const game = await gameService.Update(id, title, platform, year, price);
+      res.status(200).json({ message: "Jogo atualizado com sucesso!", game : game });
     } else {
       res.status(400).json({ error: "Ocorreu um erro de validação de ID." });
     }
@@ -74,4 +74,27 @@ const updateGame = async (req, res) => {
   }
 };
 
-export default { getAllGames, CreateGame, deleteGame, updateGame };
+// FUNÇÃO PARA BUSCAR UM JOGO UNICO
+const getOneGame = async (req, res) => {
+  try{
+    const id = req.params.id
+    if (ObjectId.isValid(id)){
+      const game = await gameService.getOne(id)
+      // Verificando se o jogo foi encontrado
+      if (!game) { // Se o jogo não existir (! = NOT)
+        res.status(404).json({ error: "O jogo buscando não foi encontrado."})
+      } else { // JOGO ENCONTRADO
+        res.status(200).json({ game })
+      }
+      // SE A ID FOR INVALIDA
+    } else {
+      res.status(400).json({ error: "A ID informada é invalida."})
+      // COD. 400 - BAD REQUEST (Requisição mal formada)
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+}
+
+export default { getAllGames, CreateGame, deleteGame, updateGame, getOneGame };
