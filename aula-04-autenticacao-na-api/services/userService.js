@@ -16,6 +16,15 @@ class userService {
             console.log(error)
         }
     }
+    async getOne(email){
+        try {
+            // findOne() busca um registro no banco de dados
+            const user = await User.findOne({email : email})
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 // Exportando a classe
 export default new userService();
