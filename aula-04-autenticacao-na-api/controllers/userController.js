@@ -29,7 +29,7 @@ const loginUser = async (req, res) => {
         // se o e-mail existe
         if(email != undefined){
             // busca usuário no banco
-            const user = await userServices.getOne(email)
+            const user = await userService.getOne(email)
             // se o usuário for encontrado
             if(user != undefined){
                 // verifica se a senha está correta
